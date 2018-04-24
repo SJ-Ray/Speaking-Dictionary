@@ -1,12 +1,13 @@
+import win32com.client
 import pyperclip
 import time
 import re
-import os
 
 from nltk.corpus import wordnet
-
+	
 new_data="";
 clean_re=re.compile('[_\d\!@#\$%\^\&\*\(\)\-\+\=\[\]\{\}\|~`\'\":;,\?\.\<\>\\\\]')
+speak = win32com.client.Dispatch('Sapi.SpVoice')
 
 while True:
 	time.sleep(2)
@@ -20,8 +21,8 @@ while True:
 				syns=wordnet.synsets(clean_wrd)
 				defn=syns[0].definition();
 				print(clean_wrd,':',defn+"\n")
-				os.system('espeak -v f2 "'+clean_wrd+'"')
-				os.system('espeak -v f2 "'+defn+'"')
+				speak.Speak(word)
+				speak.Speak(defn)
 			except Exception:
 				print(clean_wrd,": no meaning found\n")
 	new_data=pyperclip.paste()
